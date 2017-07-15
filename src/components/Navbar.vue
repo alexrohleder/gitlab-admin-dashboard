@@ -53,7 +53,7 @@ export default {
     }),
   },
   mounted() {
-    this.$store.dispatch('group/loadGroups');
+    this.$store.dispatch('group/load');
   },
 };
 </script>

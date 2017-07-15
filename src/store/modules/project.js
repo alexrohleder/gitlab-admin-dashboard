@@ -1,5 +1,6 @@
-import Axios from 'axios';
+import _ from 'lodash';
 import RandomColor from 'randomcolor';
+import { getParams, fetch } from './utils';
 
 export default {
   state: {
@@ -9,19 +10,18 @@ export default {
     availables: state => state.availables,
   },
   actions: {
-    load({ commit }, params) {
-      Axios.get('/api/v4/projects', { params: Object.assign({ per_page: 100 }, params) }).then(({ data }) => {
-        commit('add', data);
-      });
+    load({ commit }, query = {}) {
+      return fetch('/api/v4/groups', getParams(query))
+        .then(data => data.forEach(project => commit('add', project)));
     },
   },
   /* eslint-disable no-param-reassign */
   mutations: {
-    add(state, projects) {
-      projects.forEach((project) => {
+    add(state, project) {
+      if (!_.find(state.availables, { id: project.id })) {
         project.color = RandomColor({ hue: 'blue' });
         state.availables.push(project);
-      });
+      }
     },
   },
 };

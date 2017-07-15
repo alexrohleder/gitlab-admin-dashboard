@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      issues: 'group/enabledIssues',
+      issues: 'group/enabledGroupIssues',
     }),
   },
   watch: {
@@ -49,7 +49,6 @@ export default {
           if (label.indexOf('FSW') === -1 && label.indexOf('NS') === -1) {
             return;
           }
-
 
           if (!_.find(this.labels, { name: label })) {
             this.labels.push({ name: label, issues: [] });
@@ -66,12 +65,18 @@ export default {
     },
   },
   beforeRouteEnter(to, from, next) {
-    const interval = setInterval(() => {
+    const findGroupInterval = setInterval(() => {
       if (Store.getters['group/availables'].length) {
-        Store.commit('group/setEnabledGroup', { id: Number(to.params.group) });
-        Store.dispatch('group/loadGroupIssues', to.params.group);
+        Store.commit('group/enable', { id: Number(to.params.group) });
 
-        clearInterval(interval);
+        const setEnabledGroupInterval = setInterval(() => {
+          if (Store.getters['group/enabledGroup']) {
+            // Store.dispatch('issue/load');
+            clearInterval(setEnabledGroupInterval);
+          }
+        });
+
+        clearInterval(findGroupInterval);
       }
     });
 

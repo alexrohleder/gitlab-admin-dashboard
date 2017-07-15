@@ -12,9 +12,9 @@
           </a>
         </div>
       </div>
-      <div class="card-footer" v-if="project">
-        <button class="label color-label" :style="{ 'background-color': project.color }">
-          {{ project.name }}
+      <div class="card-footer" v-if="issue.project">
+        <button class="label color-label" :style="{ 'background-color': issue.project.color }">
+          {{ issue.project.name }}
         </button>
       </div>
     </div>
@@ -31,19 +31,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      projects: 'project/availables',
+      projects: 'group/enabledGroupProjects',
     }),
     assignee() {
       return _.first(this.issue.assignees);
     },
-    project() {
-      return _.find(this.projects, { id: this.issue.project_id });
-    },
-  },
-  mounted() {
-    if (this.projects.length === 0) {
-      this.$store.dispatch('project/load');
-    }
   },
 };
 </script>
