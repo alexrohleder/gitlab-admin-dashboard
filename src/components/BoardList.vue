@@ -1,30 +1,33 @@
 <template>
   <div>
     <div class="boards-app">
-      <div class="loading" v-if="loading">
-        <i class="fa fa-spinner fa-spin"></i>
-      </div>
-      <div class="boards-list" v-else>
-        <template v-for="label in labels">
-          <board :title="label.name" :issues="label.issues" />
-        </template>
-      </div>
+      <template v-if="isLoading">
+        <div class="loading">
+          <i class="fa fa-spinner fa-spin"></i>
+        </div>
+      </template>
+      <template v-else>
+        <div class="boards-list">
+          <board v-for="label in labels" :key="label" :title="label" :issues="getLabelIssues(label)" />
+        </div>
+      </template>
     </div>
   </div>
 </template>
 
 <style>
-  @media (min-width: 768px) {
-    .boards-list {
-      min-height: 569px;
-    }
+@media (min-width: 768px) {
+  .boards-list {
+    min-height: 569px;
   }
+}
 </style>
 
 <script>
 import _ from 'lodash';
 import { mapGetters } from 'vuex';
-import Store from '@/store';
+import { LOAD_PROJECTS } from '@/store/modules/project/constants';
+import { LOAD_GROUP_ISSUES, ENABLE_GROUP } from '@/store/modules/group/constants';
 import Board from './Board';
 
 export default {
@@ -33,54 +36,31 @@ export default {
   },
   data() {
     return {
-      labels: [],
-      loading: true,
+      isLoading: true,
     };
   },
   computed: {
     ...mapGetters({
-      issues: 'group/enabledGroupIssues',
+      group: 'enabledGroup',
+      labels: 'enabledGroupLabels',
     }),
   },
-  watch: {
-    issues(issues) {
-      issues.forEach((issue, i) => {
-        issue.labels.forEach((label) => {
-          if (label.indexOf('FSW') === -1 && label.indexOf('NS') === -1) {
-            return;
-          }
-
-          if (!_.find(this.labels, { name: label })) {
-            this.labels.push({ name: label, issues: [] });
-          }
-
-          const index = _.findIndex(this.labels, { name: label });
-          this.labels[index].issues.push(issue);
-        });
-
-        if (i === issues.length - 1) {
-          this.loading = false;
-        }
-      });
+  methods: {
+    getLabelIssues(label) {
+      return _.filter(this.group.issues, issue => issue.labels.indexOf(label) > -1);
     },
   },
   beforeRouteEnter(to, from, next) {
-    const findGroupInterval = setInterval(() => {
-      if (Store.getters['group/availables'].length) {
-        Store.commit('group/enable', { id: Number(to.params.group) });
-
-        const setEnabledGroupInterval = setInterval(() => {
-          if (Store.getters['group/enabledGroup']) {
-            // Store.dispatch('issue/load');
-            clearInterval(setEnabledGroupInterval);
-          }
-        });
-
-        clearInterval(findGroupInterval);
-      }
+    next((vm) => {
+      Promise.all([
+        vm.$store.dispatch(LOAD_GROUP_ISSUES, to.params.group),
+        vm.$store.commit(ENABLE_GROUP, { id: Number(to.params.group) }),
+        vm.$store.dispatch(LOAD_PROJECTS),
+      ]).then(() => {
+        /* eslint-disable no-param-reassign */
+        vm.isLoading = false;
+      });
     });
-
-    next();
   },
 };
 </script>

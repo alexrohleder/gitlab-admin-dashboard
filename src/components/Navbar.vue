@@ -29,13 +29,11 @@
       <div class="container-fluid">
         <div class="nav-control">
           <ul class="nav-links">
-            <template v-for="group in groups">
-              <router-link :to="{ name: 'group', params: { group: group.id } }" active-class="active" tag="li">
-                <a href="#" v-on:click.prevent>
-                  {{ group.name }}
-                </a>
-              </router-link>
-            </template>
+            <router-link v-for="group in groups" :key="group.id" :to="getGroupRoute(group)" active-class="active" tag="li">
+              <a href="#" v-on:click.prevent>
+                {{ group.name }}
+              </a>
+            </router-link>
           </ul>
         </div>
       </div>
@@ -45,15 +43,21 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { LOAD_GROUPS } from '@/store/modules/group/constants';
 
 export default {
   computed: {
     ...mapGetters({
-      groups: 'group/availables',
+      groups: 'groups',
     }),
   },
   mounted() {
-    this.$store.dispatch('group/load');
+    this.$store.dispatch(LOAD_GROUPS);
+  },
+  methods: {
+    getGroupRoute(group) {
+      return { name: 'group', params: { group: group.id } };
+    },
   },
 };
 </script>

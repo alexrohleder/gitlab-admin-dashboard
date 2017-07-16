@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import Axios from 'axios';
 
-export function getParams(query) {
+export function getParams(query: string): Object {
   return { params: Object.assign({ per_page: 100 }, query) };
 }
 
-export function fetch(url, params, type = _.isArray) {
+export function fetch(url: string, params: Object, type: Function = _.isArray): Promise {
   return new Promise((resolve, reject) => {
     Axios.get(url, params).then(({ data }) => {
       if (!type(data)) {

@@ -1,0 +1,5 @@
+export const LOAD_GROUPS = 'LOAD_GROUPS';
+export const LOAD_GROUP_ISSUES = 'LOAD_GROUP_ISSUES';
+export const ENABLE_GROUP = 'ENABLE_GROUP';
+export const ADD_GROUPS = 'ADD_GROUPS';
+export const ADD_GROUP_ISSUES = 'ADD_GROUPS_ISSUES';

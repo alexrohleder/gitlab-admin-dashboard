@@ -23,16 +23,12 @@
 
 <script>
 import _ from 'lodash';
-import { mapGetters } from 'vuex';
 
 export default {
   props: {
     issue: Object,
   },
   computed: {
-    ...mapGetters({
-      projects: 'group/enabledGroupProjects',
-    }),
     assignee() {
       return _.first(this.issue.assignees);
     },

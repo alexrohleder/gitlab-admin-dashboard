@@ -8,9 +8,5 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
-  modules: {
-    group: Object.assign({ namespaced: true }, group),
-    project: Object.assign({ namespaced: true }, project),
-    issue: Object.assign({ namespaced: true }, issue),
-  },
+  modules: { group, project, issue },
 });

@@ -14,8 +14,6 @@ import Navbar from './Navbar';
 
 export default {
   name: 'app',
-  components: {
-    Navbar,
-  },
+  components: { Navbar },
 };
 </script>
