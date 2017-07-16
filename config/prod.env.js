@@ -1,4 +1,5 @@
 module.exports = {
   NODE_ENV: '"production"',
-  GITLAB_PRIVATE_TOKEN: '"H85tirPW8x4yTajzD7Hb"'
+  GITLAB_ADDRESS: 'http://gitlab.org/',
+  GITLAB_PRIVATE_TOKEN: '"?"',
 }

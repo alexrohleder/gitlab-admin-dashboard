@@ -1,8 +1,10 @@
-# meta-dashboard
+# gitlab-admin-dashboard
 
-> dashboard de gerencia de projetos no gitlab da Meta
+> An easy to configure dashboard to show gitlab information on demand.
 
 ## Build Setup
+
+set your gitlab address and api key in [prod.env.js](config/prod.env.js).
 
 ``` bash
 # install dependencies

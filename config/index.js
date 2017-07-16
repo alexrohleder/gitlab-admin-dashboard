@@ -1,5 +1,6 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
+var devEnv = require('./dev.env')
 
 module.exports = {
   build: {
@@ -22,14 +23,14 @@ module.exports = {
     bundleAnalyzerReport: process.env.npm_config_report
   },
   dev: {
-    env: require('./dev.env'),
+    env: devEnv,
     port: 8080,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://gitlab.meta.com.br/',
+        target: devEnv.GITLAB_ADDRESS,
         changeOrigin: true,
       },
     },
