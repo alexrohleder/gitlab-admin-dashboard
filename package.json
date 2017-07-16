@@ -1,8 +1,8 @@
 {
-  "name": "meta-dashboard",
-  "version": "1.0.0",
-  "description": "dashboard de gerencia de projetos no gitlab da Meta",
-  "author": "Alex Rohleder <alex.rohleder@meta.com.br>",
+  "name": "gitlab-admin-dashboard",
+  "version": "0.0.1",
+  "description": "An easy to configure dashboard to show gitlab information on demand.",
+  "author": "Alex Rohleder <contato@alexrohleder.com.br>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
